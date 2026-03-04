@@ -19,7 +19,7 @@ public class Member {
 	private String userPwd;
 	private String userName;
 	private String email;
-	private String birthday;
+	private String birthday;// 123131 -> date
 	private String gender;
 	private String phone;
 	private String address;
