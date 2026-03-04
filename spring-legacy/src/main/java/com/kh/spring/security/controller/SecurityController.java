@@ -1,11 +1,12 @@
 package com.kh.spring.security.controller;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -39,6 +40,12 @@ public class SecurityController {
 	public SecurityController(MemberService mService, BCryptPasswordEncoder passwordEncoder) {
 		this.mService = mService;
 		this.passwordEncoder = passwordEncoder;
+	}
+	
+	@RequestMapping("/accessDenied")
+	public String accessDenied(Model m) {
+		m.addAttribute("errorMsg", "접근 불가능한 페이지입니다.");
+		return "common/errorPage";
 	}
 	
 	// 회원가입페이지 이동
