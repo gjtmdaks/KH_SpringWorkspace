@@ -116,7 +116,7 @@ background-color: black;
 						3. Credentials : 사용자의 암호화된 "비밀번호"가 담기는 영역
 					 -->
 					<label><sec:authentication property="principal.userName"/> 님 환영합니다.</label> &nbsp;&nbsp;
-					<a href="${contextPath }/member/myPage">마이페이지</a>
+					<a href="${contextPath }/security/myPage">마이페이지</a>
 					<form:form method="post" action="${contextPath }/member/logout" style="display: inline;">
 						<button class="border-0 bg-transparent text-secondary p-0 ml-2">로그아웃</button>
 					</form:form>
@@ -126,11 +126,18 @@ background-color: black;
 		<div id="header_2">
 			<ul>
 				<li><a href="${contextPath }">HOME</a></li>
-                <li><a href="${contextPath }/chat/chatRoomList">채팅</a></li>
-
-                <c:forEach items='${boardTypeList}' var='boardType'>
-                    <li><a href="${contextPath }/board/list/${boardType.boardCd}">${boardType.boardName}</a></li>
-                </c:forEach>
+				
+				<!-- 권한별 URL 노출 설정 -->
+				<sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
+	                <li><a href="${contextPath }/chat/chatRoomList">채팅</a></li>
+	
+	                <c:forEach items='${boardTypeMap}' var='boardType'>
+	                    <li><a href="${contextPath }/board/list/${boardType.key}">${boardType.value.boardName}</a></li>
+	                </c:forEach>
+				</sec:authorize>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                	<li><a>관리자 페이지</a></li>
+                </sec:authorize>
 			</ul>
 		</div>
 	</div>

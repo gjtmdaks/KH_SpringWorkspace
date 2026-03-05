@@ -1,9 +1,13 @@
 package com.kh.spring.security.controller;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.spring.member.model.service.MemberService;
 import com.kh.spring.member.model.validator.MemberValidator;
 import com.kh.spring.member.model.vo.Member;
+import com.kh.spring.security.model.vo.MemberExt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -108,5 +113,63 @@ public class SecurityController {
 		
 		
 		return "redirect:/member/login";
+	}
+	
+	/*
+	 * Authentication
+	 *  - Principal : 인증에 사용된 사용자 객체
+	 *  - Credentials : 인증에 필요한 비밀번호에 대한 정보를 가진 객체
+	 *  - Authorities : 사용자가 가진 권한을 저장하는 객체
+	 */
+	@GetMapping("/myPage")
+	public String myPage(
+				Authentication auth,
+				Principal principal,
+				Model model) {
+		// 인증된 사용자 정보 가져오는 방법
+		// 1. ArgumentResolver를 이용한 자동바인딩
+		log.debug("auth = {}", auth);
+		log.debug("principal = {}", principal);
+		
+		// 2. SecurityContextHolder를 이용
+		Authentication auth2 = SecurityContextHolder.getContext().getAuthentication();
+		MemberExt loginUser = (MemberExt) auth2.getPrincipal();
+//		MemberExt loginUser = (MemberExt) prin;
+		
+		model.addAttribute("loginUser", loginUser);
+		
+		return "member/myPage";
+	}
+	
+	@PostMapping("/update")
+	public String update(
+				@Validated @ModelAttribute
+				MemberExt loginUser,
+				BindingResult bindResult,
+				Authentication auth, // 로그인한 사용자 인증정보
+				RedirectAttributes ra) {
+		if(bindResult.hasErrors()) {
+			return "redirect:/security/myPage";
+		}
+		
+		// 비지니스 로직
+		// 1. 전달받은 member데이터를 바탕으로 DB 수정요청
+		int result = mService.updateMember(loginUser);
+		
+		// 2. 내정보 수정이 성공했다면, 변경된 회원정보를 DB에서 다시 조회한 후
+		//    새로운 인증정보를 생성하여 SecurityContext에 저장.
+		if(result > 0) {
+			// (principal, credentials, authorities)
+			Authentication newAuth = 
+					new UsernamePasswordAuthenticationToken(
+							loginUser, auth.getCredentials(), 
+							auth.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			ra.addFlashAttribute("alertMsg", "내 정보 수정 성공");
+			
+			return "redirect:/security/myPage";
+		}else {
+			throw new RuntimeException("회원정보 수정 오류");
+		}
 	}
 }

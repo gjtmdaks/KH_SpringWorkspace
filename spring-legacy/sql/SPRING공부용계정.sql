@@ -8,3 +8,22 @@ INSERT INTO AUTHORITIES VALUES(10, 'ROLE_ADMIN');
 INSERT INTO AUTHORITIES VALUES(10, 'ROLE_USER');
 
 COMMIT;
+
+CREATE TABLE persistent_logins (
+                username        VARCHAR(64)  NOT NULL,
+                series          VARCHAR(64)  PRIMARY KEY,
+                token           VARCHAR(64)  NOT NULL,
+                last_used       TIMESTAMP    NOT NULL
+            );
+
+CREATE INDEX idx_persistent_logins_username
+    ON persistent_logins(username);
+    
+SELECT BOARD_NO, BOARD_TITLE, USER_NAME AS BOARD_WRITER, COUNT, CREATE_DATE
+FROM BOARD B
+LEFT JOIN MEMBER M ON (BOARD_WRITER = USER_NO)
+WHERE B.STATUS = 'Y'
+    AND BOARD_CD = 'N'
+ORDER BY BOARD_NO DESC;
+
+

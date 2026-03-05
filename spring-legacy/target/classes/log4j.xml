@@ -68,8 +68,8 @@
 	 -->
 	<!-- Application Loggers -->
 	<logger name="com.kh.spring">
-		<!-- <level value="info" /> -->
 		<level value="debug" />
+		<!-- <level value="info" /> -->
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -93,7 +93,7 @@
 		 - 최상위 로거 객체로, 모든 로거의 공통설정을 작성할때 사용한다.
 	-->
 	<root>
-		<!-- <priority value="warn" /> -->
+		<priority value="debug" /> 
 		<appender-ref ref="console" />
 		<appender-ref ref="dailyLog" />
 	</root>
