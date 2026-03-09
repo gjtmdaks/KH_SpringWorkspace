@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>		<!-- pom.xml의 버전정보 -->
-	<groupId>com.kh</groupId>				<!-- 2레벨까지의 패키지 경로. 일반적으로 그룹(회사)의 이름이 들어감.  -->
-	<artifactId>spring</artifactId>			<!-- 3레벨 패키지의 경로. 일반적으로 어플리케이션의 이름이 들어감 -->
-	<name>spring-legacy</name>				<!-- 프로젝트명  -->
-	<packaging>war</packaging> 				<!-- 어플리케이션 배포시의 압축형태-->
-	<version>1.0.0-BUILD-SNAPSHOT</version> <!-- 어플리케이션의 버전정보 -->
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.kh</groupId>
+	<artifactId>study</artifactId>
+	<name>SPRING_STUDY_PROJECT</name>
+	<packaging>war</packaging>
+	<version>1.0.0-BUILD-SNAPSHOT</version>
 	
-	<properties> <!-- 1. 설정파일들에 대한 버전정보를 관리 -->
+	<properties>
 		<java-version>11</java-version>
 		<org.springframework-version>5.3.20</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
@@ -93,9 +93,6 @@
 			<version>1</version>
 		</dependency>
 				
-		<!-- Servlet
-			1. 서블릿 버전 2.5에서 4.0.1로 변경
-		 -->
 		<!-- Source: https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
@@ -123,12 +120,6 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- 
-			2. DB와 관련된 의존성들
-			 1) ojdbc6 / spring jdbc
-			 2) mybatis / spring mybatis
-			 3) 커넥션풀
-		 -->
 		<!-- Source: https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc6 -->
 		<dependency>
 		    <groupId>com.oracle.database.jdbc</groupId>
@@ -163,9 +154,7 @@
 		    <version>1.4</version>
 		    <scope>compile</scope>
 		</dependency>
-		<!-- DB관련 라이브러리 끝 -->
 		
-		<!-- 3. lombok -->
 		<!-- Source: https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
@@ -174,10 +163,6 @@
 		    <scope>compile</scope>
 		</dependency>
 		
-		<!-- 
-			4. jackson-databind
-			 - 자바객체를 자동으로 JSON으로 변환하여 반환해주는 라이브러리
-		 -->
 		 <!-- Source: https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
@@ -186,7 +171,6 @@
 		    <scope>compile</scope>
 		</dependency>
 		
-		<!-- 스프링 시큐리티 관련 의존성 -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -229,8 +213,6 @@
             <version>1.3.2</version>
         </dependency>
         
-        <!-- 게시판 서비스 관련 의존성 -->
-        <!-- 1. 파일업로드 관련 의존성 -->
         <!-- Source: https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
 		<dependency>
 		    <groupId>commons-fileupload</groupId>
@@ -239,7 +221,6 @@
 		    <scope>compile</scope>
 		</dependency>
 		
-		<!-- 2. 입출력 관련 의존성 -->
 		<!-- Source: https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 		    <groupId>commons-io</groupId>
@@ -247,7 +228,6 @@
 		    <version>2.11.0</version>
 		    <scope>compile</scope>
 		</dependency>
-        <!-- 게시판 서비스 관련 의존성 끝 -->
 	</dependencies>
 	
     <build>

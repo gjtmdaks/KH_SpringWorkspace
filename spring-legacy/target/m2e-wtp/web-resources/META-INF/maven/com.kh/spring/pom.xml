@@ -248,7 +248,6 @@
 		    <scope>compile</scope>
 		</dependency>
         <!-- 게시판 서비스 관련 의존성 끝 -->
-		
 	</dependencies>
 	
     <build>

@@ -30,34 +30,26 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 인코딩 필터 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		
 		<init-param>
 			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value> <!-- 인코딩 타입 설정 -->
+			<param-value>UTF-8</param-value>
 		</init-param>
 		
 		<init-param>
 			<param-name>forceEncoding</param-name>
-			<param-value>true</param-value> <!-- 인코딩 충돌시 강제 인코딩 설정 -->
+			<param-value>true</param-value>
 		</init-param>
 	</filter>
 	
 	<filter-mapping>
-		<!-- filter-name은 filter로 등록한 filter-name과 동일해야한다  -->
 		<filter-name>encodingFilter</filter-name>
-		<!-- 인코딩을 적용할 url패턴 설정 -->
 		<url-pattern>/*</url-pattern> 
 	</filter-mapping>
 	
-	<!-- 
-		Multipart형식의 데이터를 처리하기 위한 필터
-		 - DispatcherServlet이 Request를 MultipartRequest로 파싱하기
-		   전, Filter단계에서 파싱하도록 하는 필터.
-	 -->
 	<filter>
 		<filter-name>multipartFilter</filter-name>
 		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
@@ -72,9 +64,6 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<!-- 
-		스프링 시큐리티 필터체인 등록하기
-	 -->
 	 <filter>
 	 	<filter-name>springSecurityFilterChain</filter-name>
 	 	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
