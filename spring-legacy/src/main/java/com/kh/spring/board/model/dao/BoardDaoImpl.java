@@ -3,11 +3,11 @@ package com.kh.spring.board.model.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.board.model.vo.Board;
+import com.kh.spring.board.model.vo.BoardExt;
 import com.kh.spring.board.model.vo.BoardImg;
 import com.kh.spring.common.model.vo.PageInfo;
 
@@ -95,5 +95,30 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public int insertBoardImgList(List<BoardImg> imgList) {
 		return session.insert("board.insertBoardImgList", imgList);
+	}
+
+	@Override
+	public BoardExt selectBoard(int boardNo) {
+		return session.selectOne("board.selectBoard", boardNo);
+	}
+
+	@Override
+	public int increaseCount(int boardNo) {
+		return session.update("board.increaseCount", boardNo);
+	}
+
+	@Override
+	public int updateBoard(Board board) {
+		return session.update("board.updateBoard", board);
+	}
+
+	@Override
+	public int updateBoardImg(BoardImg bi) {
+		return session.update("board.updateBoardImg", bi);
+	}
+
+	@Override
+	public int deleteBoardImg(String deleteList) {
+		return session.delete("board.deleteBoardImg", deleteList);
 	}
 }

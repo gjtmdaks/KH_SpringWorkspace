@@ -86,7 +86,7 @@
 		INSERT INTO
 		BOARD_IMG(BOARD_IMG_NO, ORIGIN_NAME, CHANGE_NAME, REF_BNO, IMG_LEVEL)
 		SELECT SEQ_IMG_NO.NEXTVAL, C.*
-		FORM (
+		FROM (
 			<foreach collection="list" item="bi" separator="UNION ALL">
 				SELECT #{bi.originName}, #{bi.changeName}
 						, #{bi.refBno}, #{bi.imgLevel}
@@ -94,4 +94,54 @@
 			</foreach>
 		) C
 	</insert>
+	
+	<select id="selectBoard" resultMap="boardExtMap">
+		SELECT BOARD_NO, BOARD_WRITER, BOARD_TITLE, BOARD_CONTENT, COUNT, CREATE_DATE
+		FROM BOARD B
+		LEFT JOIN MEMBER M ON BOARD_WRITER = USER_NO
+		WHERE BOARD_NO = #{boardNo}
+		    AND B.STATUS = 'Y'
+	</select>
+	<resultMap type="boardExt" id="boardExtMap">
+		<id column="BOARD_NO" property="boardNo" />
+		
+		<!-- imgList 바인딩 -->
+		<collection property="imgList" 
+			javaType="List"
+			ofType="boardImg"
+			select="selectBoardImgList"
+			column="BOARD_NO"
+		/>
+	</resultMap>
+	<select id="selectBoardImgList" resultType="boardImg">
+		SELECT *
+		FROM BOARD_IMG
+		WHERE REF_BNO = #{boardNo}
+		ORDER BY IMG_LEVEL
+	</select>
+	
+	<update id="increaseCount">
+		UPDATE BOARD
+		SET COUNT = COUNT+1
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateBoard">
+		UPDATE BOARD
+		SET BOARD_TITLE = #{boardTitle},
+			BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateBoardImg">
+		UPDATE BOARD_IMG
+		SET ORIGIN_NAME = #{originName},
+			CHANGE_NAME = #{changeName}
+		WHERE BOARD_IMG_NO
+	</update>
+	
+	<delete id="deleteBoardImg">
+		DELETE FROM BOARD_IMG
+		WHERE BOARD_IMG_NO IN (${deleteList})
+	</delete>
 </mapper>

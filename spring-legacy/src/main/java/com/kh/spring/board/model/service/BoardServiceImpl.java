@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.spring.board.model.dao.BoardDao;
 import com.kh.spring.board.model.vo.Board;
+import com.kh.spring.board.model.vo.BoardExt;
 import com.kh.spring.board.model.vo.BoardImg;
 
 import lombok.RequiredArgsConstructor;
@@ -79,6 +80,50 @@ public class BoardServiceImpl implements BoardService {
 				throw new RuntimeException("첨부파일 등록 실패");
 			}
 		}
+		
+		return result;
+	}
+
+	@Override
+	public BoardExt selectBoard(int boardNo) {
+		return boardDao.selectBoard(boardNo);
+	}
+
+	@Override
+	public int increaseCount(int boardNo) {
+		return boardDao.increaseCount(boardNo);
+	}
+
+	@Override
+	public int updateBoard(Board board, String deleteList, List<BoardImg> imgList) {
+		/*
+		 * 1) 새롭게 등록한 첨부파일이 0건인 경우 + deleteList값이 ""인 경우 -> 아무것도 하지 않음
+		 * 2) 첨부파일이 없던 게시글에 새롭게 첨부파일이 추가된 경우 -> INSERT문 실행
+		 * 3) 첨부파일이 있던 게시글에 새로운 첨부파일이 추가된 경우 -> UPDATE문 실행(혹은 삭제후 INSERT도 가능)
+		 * 4) 첨부파일이 있던 게시글에 첨부파일만 삭제한 경우 -> DELETE
+		 */
+		int result = boardDao.updateBoard(board);
+		
+		if(result == 0) throw new RuntimeException("게시글 수정실패");
+		
+		// 4) 삭제할 목록이 있다면 삭제
+		if(deleteList != null && !deleteList.equals("")) {
+			result = boardDao.deleteBoardImg(deleteList);
+			
+			if(result == 0) throw new RuntimeException("첨부파일 삭제 에러");
+		}
+		
+		// 수정될 게시글에 첨부파일이 있을 경우
+		if (!imgList.isEmpty()) {
+			for (BoardImg bi : imgList) {
+				result = boardDao.insertBoardImg(bi);
+
+				if (result == 0) {
+					throw new RuntimeException("첨부파일 수정 실패");
+				}
+			}
+		}
+		
 		
 		return result;
 	}
