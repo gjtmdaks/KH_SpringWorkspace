@@ -8,12 +8,26 @@
 <head>
 <meta charset="UTF-8">
 <title>제목</title>
+<meta name="_csrf" content="${_csrf.token}" >
+<meta name="_csrf_header" content="${_csrf.headerName}">
+<script>
+	window.onload = function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		// 모든 ajax요청에 자동으로 csrf토큰을 적용
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+	}
+</script>
+
 <!--  공통적으로사용할 라이브러리 추가 -->
 <!-- Jquey 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- 부트스트랩에서 제공하있는 스타일 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- 부투스트랩에서 제공하고있는 스크립트 -->
+<!-- 부트스트랩에서 제공하고있는 스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- alertify -->
