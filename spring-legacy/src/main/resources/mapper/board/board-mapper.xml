@@ -170,4 +170,13 @@
 		WHERE REPLY_NO = #{replyNo}
 			AND REPLY_WRITER = #{replyWriter}
 	</update>
+	
+	<select id="selectFileList">
+		SELECT CHANGE_NAME
+		FROM BOARD_IMG
+	</select>
+	<select id="selectBoardTypeMap" resultType="boardType">
+		SELECT *
+		FROM BOARD_TYPE
+	</select>
 </mapper>
